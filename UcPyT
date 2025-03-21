@@ -1,4 +1,4 @@
-local Studs = 10 -- الريتش يكون ثابتًا على 10
+local Studs = 7 -- الريتش يكون ثابتًا على 10
 
 local player = game.Players.LocalPlayer
 
