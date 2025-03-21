@@ -1,1 +1,42 @@
+local Studs = 10 -- الريتش يكون ثابتًا على 10
 
+local player = game.Players.LocalPlayer
+
+local function modifyReach(character)
+    local head = character:FindFirstChild("Head")
+    if head then
+        -- التأكد من عدم وجود "مربع الريتش" مسبقًا
+        local existingReachPart = character:FindFirstChild("ReachPart")
+        if existingReachPart then
+            existingReachPart:Destroy()
+        end
+
+        -- إنشاء مربع الريتش
+        local reachPart = Instance.new("Part")
+        reachPart.Name = "ReachPart"
+        reachPart.CanCollide = false
+        reachPart.Transparency = 1 -- مخفي تمامًا
+        reachPart.Anchored = false
+        reachPart.Massless = true
+        reachPart.Size = Vector3.new(Studs, Studs, Studs) -- الحجم ثابت على 10
+        reachPart.Position = head.Position
+        reachPart.Parent = character
+
+        -- ربطه بالرأس باستخدام WeldConstraint
+        local weld = Instance.new("WeldConstraint")
+        weld.Part0 = head
+        weld.Part1 = reachPart
+        weld.Parent = reachPart
+    end
+end
+
+-- تطبيق الريتش عند دخول الشخصية
+player.CharacterAdded:Connect(function(character)
+    character:WaitForChild("Head")
+    modifyReach(character)
+end)
+
+-- تطبيقه على الشخصية الحالية إذا كانت موجودة
+if player.Character then
+    modifyReach(player.Character)
+end
